@@ -102,8 +102,3 @@ let jwks = await JWKS.signingKeys(storage);
 ```
 
 The storage is a `FileStorage` object implementing the `@mjackson/file-storage` interface. This means JWKS can be saved as a file in the filesystem, AWS S3, Cloudflare R2, or any other storage provider.
-
-## What to do after cloning this repository
-
-4. Go to the Pages settings of the repo and configure it to use GitHub Actions
-5. Go to the Environment settings of the repo and update the `github-pages` enviroment "Deployment branches and tags" to allow tags with the `v*.*.*` format
