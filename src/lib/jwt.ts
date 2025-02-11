@@ -4,19 +4,27 @@ import * as jose from "jose";
 import { JWKS } from "./jwks.js";
 
 export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
-	constructor(readonly token: string) {
-		let decoded = jose.decodeJwt(token);
-		let parser = new ObjectParser(decoded);
+	constructor(public readonly payload: JWT.Payload) {
+		let parser = new ObjectParser(payload);
 		super(parser);
 
 		// biome-ignore lint/correctness/noConstructorReturn: We need this to correclty implement the JWT.Payload interface
 		return new Proxy(this, {
 			get(self, prop: string) {
-				if (prop in self) return self[prop];
+				if (prop in self) return Reflect.get(self, prop);
 				if (typeof prop === "string") {
 					if (parser.has(prop)) return parser.get<unknown>(prop);
 				}
 				return null;
+			},
+
+			set(self, prop: string, value: unknown) {
+				if (prop in self) return Reflect.set(self, prop, value);
+				if (typeof prop === "string") {
+					payload[prop] = value;
+					return true;
+				}
+				return Reflect.set(self, prop, value);
 			},
 		});
 	}
@@ -36,6 +44,10 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 		return null;
 	}
 
+	set audience(value: string | string[] | null) {
+		this.payload.aud = value ?? undefined;
+	}
+
 	/**
 	 * JWT Expiration Time
 	 *
@@ -44,6 +56,10 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 	get expiresIn() {
 		if (this.parser.has("exp")) return this.parser.number("exp");
 		return null;
+	}
+
+	set expiresIn(value: number | null) {
+		this.payload.exp = value ?? undefined;
 	}
 
 	get expiresAt() {
@@ -66,6 +82,10 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 		return null;
 	}
 
+	set issuedAt(value: Date | null) {
+		this.payload.iat = value ? Math.floor(value.getTime() / 1000) : undefined;
+	}
+
 	/**
 	 * JWT Issuer
 	 *
@@ -74,6 +94,10 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 	get issuer() {
 		if (this.parser.has("iss")) return this.parser.string("iss");
 		return null;
+	}
+
+	set issuer(value: string | null) {
+		this.payload.iss = value ?? undefined;
 	}
 
 	/**
@@ -86,6 +110,10 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 		return null;
 	}
 
+	set id(value: string | null) {
+		this.payload.jti = value ?? undefined;
+	}
+
 	/**
 	 * JWT Not Before
 	 *
@@ -94,6 +122,10 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 	get notBefore() {
 		if (this.parser.has("nbf")) return new Date(this.parser.number("nbf"));
 		return null;
+	}
+
+	set notBefore(value: Date | null) {
+		this.payload.nbf = value ? Math.floor(value.getTime() / 1000) : undefined;
 	}
 
 	/**
@@ -106,8 +138,12 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 		return null;
 	}
 
-	verify(jwks: JWKS.KeyPair[], options: jose.JWTVerifyOptions) {
-		return JWT.verify(this.token, jwks, options);
+	set subject(value: string | null) {
+		this.payload.sub = value ?? undefined;
+	}
+
+	sign(algorithm: string, jwks: JWKS.KeyPair[]) {
+		return JWT.sign(this, algorithm, jwks);
 	}
 
 	static verify(
@@ -120,19 +156,30 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 		return jose.jwtVerify(token, key.public, options);
 	}
 
-	static sign(
-		payload: jose.JWTPayload,
-		algorithm: string,
-		jwks: JWKS.KeyPair[],
-	) {
+	static sign(jwt: JWT, algorithm: string, jwks: JWKS.KeyPair[]) {
 		let key = jwks.find((key) => key.alg === algorithm);
 		if (!key) {
 			throw new Error(
 				`No key available to sign JWT with algorithm ${algorithm}`,
 			);
 		}
-		return new jose.SignJWT(payload)
+		return new jose.SignJWT(jwt.payload)
 			.setProtectedHeader({ alg: algorithm, typ: "JWT", kid: "sst" })
 			.sign(key.private);
 	}
+
+	static decode<M extends JWT>(
+		this: new (
+			payload: JWT.Payload,
+		) => M,
+		token: string,
+	) {
+		// biome-ignore lint/complexity/noThisInStatic: We're doing this to allow extending the JWT class
+		return new this(jose.decodeJwt(token));
+	}
+}
+
+export namespace JWT {
+	export type Payload = jose.JWTPayload;
+	export type VerifyOptions = jose.JWTVerifyOptions;
 }

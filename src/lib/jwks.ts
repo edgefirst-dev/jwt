@@ -20,6 +20,10 @@ interface SerializedKeyPair {
 }
 
 export class JWKS extends Data<ObjectParser> {
+	private constructor(parser: ObjectParser) {
+		super(parser);
+	}
+
 	get publicKey() {
 		return this.parser.string("publicKey");
 	}
