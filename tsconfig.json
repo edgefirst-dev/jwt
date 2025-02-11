@@ -1,6 +1,5 @@
 {
-	/* Change to `@total-typescript/tsconfig/tsc/dom/library` for DOM usage */
-	"extends": "@total-typescript/tsconfig/tsc/no-dom/library",
+	"extends": "@total-typescript/tsconfig/tsc/dom/library",
 	"include": ["src/**/*"],
 	"exclude": ["src/**/*.test.*"],
 	"compilerOptions": {

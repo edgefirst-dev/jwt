@@ -1,7 +1,7 @@
 {
-	"name": "package-name",
+	"name": "@edgefirst-dev/jwt",
 	"version": "0.0.0",
-	"description": "A description of the package",
+	"description": "A library to simplify using JWT in your application.",
 	"license": "MIT",
 	"funding": ["https://github.com/sponsors/sergiodxa"],
 	"author": {
@@ -11,11 +11,11 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/sergiodxa/package"
+		"url": "https://github.com/edgefirst-dev/jwt"
 	},
-	"homepage": "https://sergiodxa.github.io/package",
+	"homepage": "https://edgefirst-dev.github.io/jwt",
 	"bugs": {
-		"url": "https://github.com/sergiodxa/package/issues"
+		"url": "https://github.com/edgefirst-dev/jwt/issues"
 	},
 	"scripts": {
 		"build": "tsc",
@@ -35,6 +35,8 @@
 		"./package.json": "./package.json"
 	},
 	"dependencies": {
+		"@edgefirst-dev/data": "0.0.3",
+		"@mjackson/file-storage": "^0.6.1",
 		"jose": "^5.9.6"
 	},
 	"peerDependencies": {},
