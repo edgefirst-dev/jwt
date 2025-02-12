@@ -51,7 +51,7 @@ test("can verify a JWT", async () => {
 
 	expect(
 		JWT.verify(token, keys, { audience: payload.aud, issuer: payload.iss }),
-	).resolves.toBeDefined();
+	).resolves.toBeInstanceOf(JWT);
 });
 
 test("can extend the JWT", async () => {
@@ -77,6 +77,10 @@ test("can extend the JWT", async () => {
 	expect(jwt).toBeInstanceOf(CustomJWT);
 	expect(jwt.issuer).toBe(payload.iss);
 	expect(jwt.userId).toBe(payload.uid);
+
+	expect(
+		CustomJWT.verify(token, await JWK.signingKeys(storage)),
+	).resolves.toBeInstanceOf(CustomJWT);
 });
 
 test("can update a JWT instance", async () => {
@@ -102,7 +106,7 @@ test("JWT.verify from local", async () => {
 
 	let token = await new JWT(payload).sign(JWK.Algoritm.ES256, [keyPair]);
 
-	expect(JWT.verify(token, jwks)).resolves.toBeDefined();
+	expect(JWT.verify(token, jwks)).resolves.toBeInstanceOf(JWT);
 });
 
 test("JWT.verify from remote", async () => {
@@ -126,7 +130,7 @@ test("JWT.verify from remote", async () => {
 		{ alg: JWK.Algoritm.ES256 },
 	);
 
-	expect(JWT.verify(token, jwks)).resolves.toBeDefined();
+	expect(JWT.verify(token, jwks)).resolves.toBeInstanceOf(JWT);
 
 	server.close();
 });

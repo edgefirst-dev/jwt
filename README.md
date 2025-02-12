@@ -38,7 +38,7 @@ let token = await jwt.sign(JWK.Algoritm.ES256, await JWK.signingKeys(storage));
 ```ts
 import { JWT, JWK } from "@edgefirst-dev/jwt";
 
-await JWT.verify(token, await JWK.signingKeys(storage), {
+let jwt = await JWT.verify(token, await JWK.signingKeys(storage), {
   audience: "api.example.com",
   issuer: "idp.example.com",
 });
@@ -95,7 +95,7 @@ let jwks = await JWK.importLocal(
 
 let token = await new JWT(payload).sign(JWK.Algoritm.ES256, [keyPair]);
 
-await JWT.verify(token, jwks);
+let jwt = await JWT.verify(token, jwks);
 ```
 
 ### Verify a JWT from Remote JWKS
@@ -106,7 +106,7 @@ let jwks = await JWK.importRemote(
   { alg: JWK.Algoritm.ES256 }
 );
 
-await JWT.verify(token, jwks);
+let jwt = await JWT.verify(token, jwks);
 ```
 
 ### Convert JWK to JSON for well-known endpoint

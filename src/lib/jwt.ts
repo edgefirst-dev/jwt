@@ -150,14 +150,19 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 		return JWT.sign(this, algorithm, jwks);
 	}
 
-	static verify(
+	static async verify<M extends JWT>(
+		this: new (
+			payload: JWT.Payload,
+		) => M,
 		token: string,
 		jwks: Array<{ public: jose.KeyLike }>,
 		options?: jose.JWTVerifyOptions,
 	) {
 		let key = jwks.find((key) => key.public);
 		if (!key) throw new Error("No key available to verify JWT");
-		return jose.jwtVerify(token, key.public, options);
+		let result = await jose.jwtVerify(token, key.public, options);
+		// biome-ignore lint/complexity/noThisInStatic: We're doing this to allow extending the JWT class
+		return new this(result.payload);
 	}
 
 	static sign(
