@@ -1,4 +1,3 @@
-import { ObjectParser } from "@edgefirst-dev/data/parser";
 import type {
 	FileStorage,
 	ListOptions,
@@ -7,6 +6,11 @@ import type {
 import * as jose from "jose";
 
 export namespace JWK {
+	/**
+	 * The possible algorithms for the JWK.
+	 * The ES256 algorithm is used for signing keys.
+	 * @enum
+	 */
 	export enum Algoritm {
 		ES256 = "ES256",
 		RSA_OAEP_512 = "RSA-OAEP-512",
@@ -17,7 +21,7 @@ export namespace JWK {
 		Encryption = "encryption:key",
 	}
 
-	export interface KeyPair {
+	interface KeyPair {
 		id: string;
 		alg: Algoritm;
 		public: jose.KeyLike;
