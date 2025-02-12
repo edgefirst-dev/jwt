@@ -142,7 +142,8 @@ export namespace JWK {
 			let file = await storage.get(fileKey.key);
 			if (!file) continue;
 
-			results.push(await importKeyPair(await file.json()));
+			let data = JSON.parse(await file.text());
+			results.push(await importKeyPair(data));
 		}
 
 		results.sort((a, b) => b.created.getTime() - a.created.getTime());
@@ -177,7 +178,8 @@ export namespace JWK {
 			let file = await storage.get(fileKey.key);
 			if (!file) continue;
 
-			results.push(await importKeyPair(await file.json()));
+			let data = JSON.parse(await file.text());
+			results.push(await importKeyPair(data));
 		}
 
 		results.sort((a, b) => b.created.getTime() - a.created.getTime());
