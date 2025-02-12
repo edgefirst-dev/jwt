@@ -306,7 +306,7 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 	 */
 	sign(
 		algorithm: JWK.Algoritm,
-		jwks: Array<{ private: jose.KeyLike; alg: string }>,
+		jwks: Array<{ private: jose.KeyLike; alg: string; id: string }>,
 	) {
 		return JWT.sign(this, algorithm, jwks);
 	}
@@ -353,7 +353,7 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 	static sign(
 		jwt: JWT,
 		algorithm: JWK.Algoritm,
-		jwks: Array<{ private: jose.KeyLike; alg: string }>,
+		jwks: Array<{ private: jose.KeyLike; alg: string; id: string }>,
 	) {
 		let key = jwks.find((key) => key.alg === algorithm);
 		if (!key) {
@@ -362,7 +362,11 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 			);
 		}
 		return new jose.SignJWT(jwt.payload)
-			.setProtectedHeader({ alg: algorithm, typ: "JWT", kid: "sst" })
+			.setProtectedHeader({
+				alg: algorithm,
+				typ: "JWT",
+				kid: key.id,
+			})
 			.sign(key.private);
 	}
 
