@@ -1,6 +1,7 @@
 import { Data } from "@edgefirst-dev/data";
 import { ObjectParser } from "@edgefirst-dev/data/parser";
 import * as jose from "jose";
+import type { Jsonifiable } from "type-fest";
 import type { JWK } from "./jwk.js";
 
 export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
@@ -13,12 +14,12 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 			get(self, prop: string) {
 				if (prop in self) return Reflect.get(self, prop);
 				if (typeof prop === "string") {
-					if (parser.has(prop)) return parser.get<unknown>(prop);
+					if (parser.has(prop)) return parser.get<Jsonifiable>(prop);
 				}
 				return null;
 			},
 
-			set(self, prop: string, value: unknown) {
+			set(self, prop: string, value: Jsonifiable) {
 				if (prop in self) return Reflect.set(self, prop, value);
 				if (typeof prop === "string") {
 					payload[prop] = value;
