@@ -1,7 +1,7 @@
 import { Data } from "@edgefirst-dev/data";
 import { ObjectParser } from "@edgefirst-dev/data/parser";
 import * as jose from "jose";
-import { JWKS } from "./jwks.js";
+import type { JWK } from "./jwk.js";
 
 export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 	constructor(public readonly payload: JWT.Payload) {
@@ -142,21 +142,28 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 		this.payload.sub = value ?? undefined;
 	}
 
-	sign(algorithm: string, jwks: JWKS.KeyPair[]) {
+	sign(
+		algorithm: JWK.Algoritm,
+		jwks: Array<{ private: jose.KeyLike; alg: string }>,
+	) {
 		return JWT.sign(this, algorithm, jwks);
 	}
 
 	static verify(
 		token: string,
-		jwks: JWKS.KeyPair[],
-		options: jose.JWTVerifyOptions,
+		jwks: Array<{ public: jose.KeyLike }>,
+		options?: jose.JWTVerifyOptions,
 	) {
 		let key = jwks.find((key) => key.public);
 		if (!key) throw new Error("No key available to verify JWT");
 		return jose.jwtVerify(token, key.public, options);
 	}
 
-	static sign(jwt: JWT, algorithm: string, jwks: JWKS.KeyPair[]) {
+	static sign(
+		jwt: JWT,
+		algorithm: JWK.Algoritm,
+		jwks: Array<{ private: jose.KeyLike; alg: string }>,
+	) {
 		let key = jwks.find((key) => key.alg === algorithm);
 		if (!key) {
 			throw new Error(

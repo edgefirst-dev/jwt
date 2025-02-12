@@ -1,4 +1,4 @@
-import { JWKS } from "./lib/jwks.js";
+import { JWK } from "./lib/jwk.js";
 import { JWT } from "./lib/jwt.js";
 
-export { JWKS, JWT };
+export { JWK, JWT };
