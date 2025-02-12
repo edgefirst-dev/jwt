@@ -8,8 +8,9 @@ import * as jose from "jose";
 export namespace JWK {
 	/**
 	 * The possible algorithms for the JWK.
-	 * The ES256 algorithm is used for signing keys.
-	 * @enum
+	 *
+	 * - `ES256`: Used for signing keys based on ECDSA with the P-256 curve.
+	 * - `RSA_OAEP_512`: Used for RSA-based encryption with OAEP padding.
 	 */
 	export enum Algoritm {
 		ES256 = "ES256",
@@ -59,6 +60,20 @@ export namespace JWK {
 		await storage.set(`${prefix}:${serialized.id}`, file);
 	}
 
+	/**
+	 * Imports a previously generated key pair and converts it into a usable
+	 * format.
+	 *
+	 * This includes converting the public key into JWK format and setting key
+	 * metadata.
+	 *
+	 * @param value - The previously generated key pair.
+	 * @returns A promise that resolves to an object containing the imported key pair.
+	 *
+	 * @example
+	 * const keyPair = await JWK.importKeyPair(existingKeyPair);
+	 * console.log(keyPair.public);
+	 */
 	export async function importKeyPair(
 		value: Awaited<ReturnType<typeof generateKeyPair>>,
 	) {
@@ -83,6 +98,18 @@ export namespace JWK {
 		} as KeyPair;
 	}
 
+	/**
+	 * Generates a new cryptographic key pair using the specified algorithm.
+	 *
+	 * The keys are generated in an extractable format to allow export and import.
+	 *
+	 * @param alg - The algorithm to use for key generation.
+	 * @returns A promise that resolves to an object containing the generated key pair.
+	 *
+	 * @example
+	 * const keyPair = await JWK.generateKeyPair(JWK.Algoritm.ES256);
+	 * console.log(keyPair);
+	 */
 	export async function generateKeyPair(alg: Algoritm) {
 		let key = await jose.generateKeyPair(alg, { extractable: true });
 		return {
@@ -94,6 +121,18 @@ export namespace JWK {
 		};
 	}
 
+	/**
+	 * Retrieves the available signing keys from the provided file storage.
+	 *
+	 * If no valid signing keys exist, a new key pair is generated and stored.
+	 *
+	 * @param storage - The file storage system to retrieve keys from.
+	 * @returns A promise that resolves to an array of signing key pairs.
+	 *
+	 * @example
+	 * const keys = await JWK.signingKeys(storage);
+	 * console.log(keys);
+	 */
 	export async function signingKeys(storage: FileStorage): Promise<KeyPair[]> {
 		let results = [] as KeyPair[];
 
@@ -116,6 +155,17 @@ export namespace JWK {
 		return signingKeys(storage);
 	}
 
+	/**
+	 * Retrieves the available encryption keys from the provided file storage.
+	 * If no valid encryption keys exist, a new key pair is generated and stored.
+	 *
+	 * @param storage - The file storage system to retrieve keys from.
+	 * @returns A promise that resolves to an array of encryption key pairs.
+	 *
+	 * @example
+	 * const keys = await JWK.encryptionKeys(storage);
+	 * console.log(keys);
+	 */
 	export async function encryptionKeys(
 		storage: FileStorage,
 	): Promise<KeyPair[]> {
@@ -140,6 +190,19 @@ export namespace JWK {
 		return encryptionKeys(storage);
 	}
 
+	/**
+	 * Imports a JSON Web Key Set (JWKS) for local verification.
+	 *
+	 * This allows JWTs to be verified against a predefined set of public keys.
+	 *
+	 * @param jwks - The JSON Web Key Set containing the public keys.
+	 * @param options - Optional settings, including the algorithm to use.
+	 * @returns A promise that resolves to an array containing the imported public key.
+	 *
+	 * @example
+	 * const publicKeys = await JWK.importLocal(jwks, { alg: JWK.Algoritm.ES256 });
+	 * console.log(publicKeys);
+	 */
 	export async function importLocal(
 		jwks: jose.JSONWebKeySet,
 		options?: { alg: Algoritm },
@@ -148,6 +211,19 @@ export namespace JWK {
 		return [{ public: await load({ alg: options?.alg }) }];
 	}
 
+	/**
+	 * Imports a JSON Web Key Set (JWKS) from a remote URL for verification.
+	 *
+	 * This method fetches public keys dynamically from an external endpoint.
+	 *
+	 * @param url - The URL of the remote JWKS endpoint.
+	 * @param options - Options for fetching the keys, including the expected algorithm.
+	 * @returns A promise that resolves to an array containing the imported public key.
+	 *
+	 * @example
+	 * const publicKeys = await JWK.importRemote(new URL("https://example.com/.well-known/jwks.json"), { alg: JWK.Algoritm.ES256 });
+	 * console.log(publicKeys);
+	 */
 	export async function importRemote(
 		url: URL,
 		options: jose.RemoteJWKSetOptions & { alg: Algoritm },
@@ -156,6 +232,19 @@ export namespace JWK {
 		return [{ public: await load({ alg: options?.alg }) }];
 	}
 
+	/**
+	 * Converts an array of key pairs into a JSON Web Key Set (JWKS) format.
+	 *
+	 * This format is commonly used for publishing public keys for JWT
+	 * verification.
+	 *
+	 * @param keys - An array of key pairs to convert into JWKS format.
+	 * @returns An object representing the JWKS structure.
+	 *
+	 * @example
+	 * const jwks = JWK.toJSON(keyPairs);
+	 * console.log(JSON.stringify(jwks, null, 2));
+	 */
 	export function toJSON(keys: KeyPair[]) {
 		return {
 			keys: keys.map(({ jwk }) => {
