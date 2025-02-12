@@ -43,7 +43,7 @@ export namespace JWK {
 		return files;
 	}
 
-	export async function storeKeyPair(
+	async function storeKeyPair(
 		storage: FileStorage,
 		prefix: "signing:key" | "encryption:key",
 		serialized: Awaited<ReturnType<typeof generateKeyPair>>,
@@ -55,27 +55,24 @@ export namespace JWK {
 		await storage.set(`${prefix}:${serialized.id}`, file);
 	}
 
-	export async function importKeyPair(parser: ObjectParser) {
-		let publicKey = await jose.importSPKI(
-			parser.string("publicKey"),
-			parser.string("alg"),
-			{ extractable: true },
-		);
+	export async function importKeyPair(
+		value: Awaited<ReturnType<typeof generateKeyPair>>,
+	) {
+		let publicKey = await jose.importSPKI(value.publicKey, value.alg, {
+			extractable: true,
+		});
 
-		let privateKey = await jose.importPKCS8(
-			parser.string("privateKey"),
-			parser.string("alg"),
-		);
+		let privateKey = await jose.importPKCS8(value.privateKey, value.alg);
 
 		let jwk = await jose.exportJWK(publicKey);
-		jwk.kid = parser.string("id");
+		jwk.kid = value.id;
 		jwk.use = "sig";
 
 		return {
-			id: parser.string("id"),
+			id: value.id,
 			alg: Algoritm.ES256,
-			created: new Date(parser.date("created")),
-			expired: parser.has("expired") ? parser.date("expired") : undefined,
+			created: new Date(value.created),
+			expired: "expired" in value ? value.expired : undefined,
 			public: publicKey,
 			private: privateKey,
 			jwk,
@@ -102,8 +99,7 @@ export namespace JWK {
 			let file = await storage.get(fileKey.key);
 			if (!file) continue;
 
-			let parser = new ObjectParser(await file.json());
-			results.push(await importKeyPair(parser));
+			results.push(await importKeyPair(await file.json()));
 		}
 
 		results.sort((a, b) => b.created.getTime() - a.created.getTime());
@@ -127,8 +123,7 @@ export namespace JWK {
 			let file = await storage.get(fileKey.key);
 			if (!file) continue;
 
-			let parser = new ObjectParser(await file.json());
-			results.push(await importKeyPair(parser));
+			results.push(await importKeyPair(await file.json()));
 		}
 
 		results.sort((a, b) => b.created.getTime() - a.created.getTime());
@@ -141,20 +136,23 @@ export namespace JWK {
 		return encryptionKeys(storage);
 	}
 
-	export async function importLocal(jwks: jose.JSONWebKeySet) {
+	export async function importLocal(
+		jwks: jose.JSONWebKeySet,
+		options?: { alg: Algoritm },
+	) {
 		let load = jose.createLocalJWKSet(jwks);
-		return [{ public: await load() }];
+		return [{ public: await load({ alg: options?.alg }) }];
 	}
 
 	export async function importRemote(
 		url: URL,
-		options?: jose.RemoteJWKSetOptions,
+		options: jose.RemoteJWKSetOptions & { alg: Algoritm },
 	) {
 		let load = jose.createRemoteJWKSet(url, options);
-		return [{ public: await load() }];
+		return [{ public: await load({ alg: options?.alg }) }];
 	}
 
-	export async function toJSON(keys: KeyPair[]) {
+	export function toJSON(keys: KeyPair[]) {
 		return {
 			keys: keys.map(({ jwk }) => {
 				return {

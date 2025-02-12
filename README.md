@@ -10,51 +10,53 @@ Install it along a library implementing `@mjackson/file-storage` interface.
 bun add @edgefirst-dev/jwt @mjackson/file-storage
 ```
 
-Create a new JWT
+### Create a JWT
 
 ```ts
 import { JWT } from "@edgefirst-dev/jwt";
 
 let jwt = new JWT(payload);
+jwt.issuer; // Read the issuer (iss) claim
+jwt.uid; // Read the uid claim
 ```
 
-You can then sign it using a signing key to get a string version.
+### Sign a JWT
 
 ```ts
-import { JWKS } from "@edgefirst-dev/jwt";
+import { JWT, JWK } from "@edgefirst-dev/jwt";
 import { MemoryFileStorage } from "@mjackson/file-storage/memory";
 
-const storage = new MemoryFileStorage();
+let storage = new MemoryFileStorage();
 
-let token = await jwt.sign("ES256", await JWKS.signingKeys(storage));
+let jwt = new JWT(payload);
+
+let token = await jwt.sign(JWK.Algoritm.ES256, await JWK.signingKeys(storage));
 ```
 
-And verify it using the public key.
+### Verify a JWT
 
 ```ts
-await jwt.verify(await JWKS.signingKeys(storage), { audience, issuer });
+import { JWT, JWK } from "@edgefirst-dev/jwt";
+
+await JWT.verify(token, await JWK.signingKeys(storage), {
+  audience: "api.example.com",
+  issuer: "idp.example.com",
+});
 ```
 
-Or if you received a JWT string, you can decode it to access the payload.
+### Decode a JWT
 
 ```ts
+import { JWT } from "@edgefirst-dev/jwt";
+
 let jwt = JWT.decode(token);
 ```
 
-### Extending the JWT
-
-The JWT class accepts some public claims, and allows you to use any private claim your JWT may have.
+### Extend the JWT class
 
 ```ts
-jwt.issuer; // public claim iss accessed with a more readable name
-jwt.uid; // private claim uid accessed with the original name
-```
+import { JWT } from "@edgefirst-dev/jwt";
 
-Here `jwt.issuer` is a public claim saved in the JWT as `iss`, but the class gives you access to it as `issuer`. The `uid` is a private claim so you access it with the original name `uid`.
-
-If you want to simplify using your own private claims, you can extend the JWT class.
-
-```ts
 class CustomJWT extends JWT {
   override get issuer() {
     return this.parser.string("iss");
@@ -64,41 +66,52 @@ class CustomJWT extends JWT {
     return this.parser.string("uid");
   }
 }
+
+let customJWT = CustomJWT.decode(token);
 ```
 
-Since every public claim is also marked as nullable, you could override it if you know it will always be present.
-
-You could even use `CustomJWT.decode` to get a `CustomJWT` instance.
+### Update a JWT instance
 
 ```ts
-let jwt = CustomJWT.decode(token);
-```
+import { JWT } from "@edgefirst-dev/jwt";
 
-This way you can have a more readable and type-safe way to access your JWT claims.
-
-### Updating the JWT
-
-Once you have a JWT instance, you can update it with new claims.
-
-```ts
+let jwt = new JWT();
 jwt.issuer = "new-issuer";
 jwt.uid = "new-uid";
 ```
 
-And then sign it again.
+### Verify a JWT from Locale JWKS
 
 ```ts
-let token = await jwt.sign("ES256", await JWKS.signingKeys(storage));
+// We need to generate and import the key pairs
+let keyPair = await JWK.importKeyPair(
+  await JWK.generateKeyPair(JWK.Algoritm.ES256)
+);
+
+let jwks = await JWK.importLocal(
+  { keys: [keyPair.jwk] },
+  { alg: JWK.Algoritm.ES256 }
+);
+
+let token = await new JWT(payload).sign(JWK.Algoritm.ES256, [keyPair]);
+
+await JWT.verify(token, jwks);
 ```
 
-### Using the JWKS
-
-The `JWKS` class is a helper to manage the JSON Web Key Set.
-
-You can use the different static methods to create a new JWKS pair.
+### Verify a JWT from Remote JWKS
 
 ```ts
-let jwks = await JWKS.signingKeys(storage);
+let jwks = await JWK.importRemote(
+  new URL("https://example.com/.well-known/jwks.json"),
+  { alg: JWK.Algoritm.ES256 }
+);
+
+await JWT.verify(token, jwks);
 ```
 
-The storage is a `FileStorage` object implementing the `@mjackson/file-storage` interface. This means JWKS can be saved as a file in the filesystem, AWS S3, Cloudflare R2, or any other storage provider.
+### Convert JWK to JSON for well-known endpoint
+
+```ts
+let keys = await JWK.signingKeys(storage);
+let response = Response.json(JWK.toJSON(keys));
+```

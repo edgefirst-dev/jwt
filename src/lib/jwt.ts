@@ -4,7 +4,7 @@ import * as jose from "jose";
 import type { JWK } from "./jwk.js";
 
 export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
-	constructor(public readonly payload: JWT.Payload) {
+	constructor(public readonly payload: JWT.Payload = {}) {
 		let parser = new ObjectParser(payload);
 		super(parser);
 

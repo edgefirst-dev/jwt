@@ -1,5 +1,4 @@
 import { expect, test } from "bun:test";
-import { ObjectParser } from "@edgefirst-dev/data/parser";
 import { MemoryFileStorage } from "@mjackson/file-storage/memory";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/native";
@@ -93,10 +92,13 @@ test("can update a JWT instance", async () => {
 
 test("JWT.verify from local", async () => {
 	let keyPair = await JWK.importKeyPair(
-		new ObjectParser(await JWK.generateKeyPair(JWK.Algoritm.ES256)),
+		await JWK.generateKeyPair(JWK.Algoritm.ES256),
 	);
 
-	let jwks = await JWK.importLocal({ keys: [keyPair.jwk] });
+	let jwks = await JWK.importLocal(
+		{ keys: [keyPair.jwk] },
+		{ alg: JWK.Algoritm.ES256 },
+	);
 
 	let token = await new JWT(payload).sign(JWK.Algoritm.ES256, [keyPair]);
 
@@ -111,7 +113,7 @@ test("JWT.verify from remote", async () => {
 	let server = setupServer(
 		http.get(
 			new URL("https://example.com/.well-known/jwks.json").toString(),
-			async () => HttpResponse.json(await JWK.toJSON(signingKeys)),
+			() => HttpResponse.json(JWK.toJSON(signingKeys)),
 		),
 	);
 
@@ -121,9 +123,28 @@ test("JWT.verify from remote", async () => {
 
 	let jwks = await JWK.importRemote(
 		new URL("https://example.com/.well-known/jwks.json"),
+		{ alg: JWK.Algoritm.ES256 },
 	);
 
 	expect(JWT.verify(token, jwks)).resolves.toBeDefined();
 
 	server.close();
+});
+
+test("can convert JWK to JSON for well-known endpoint", async () => {
+	let storage = new MemoryFileStorage();
+
+	let keys = await JWK.signingKeys(storage);
+
+	expect(JWK.toJSON(keys)).toEqual({
+		keys: [
+			{
+				crv: "P-256",
+				kty: "EC",
+				x: expect.any(String),
+				y: expect.any(String),
+				kid: expect.any(String),
+			},
+		],
+	});
 });
