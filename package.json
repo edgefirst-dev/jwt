@@ -43,7 +43,7 @@
 	"dependencies": {
 		"@edgefirst-dev/data": "0.0.3",
 		"@mjackson/file-storage": "^0.6.1",
-		"jose": "^5.9.6",
+		"jose": "^6.0.6",
 		"type-fest": "^4.34.1"
 	},
 	"peerDependencies": {},
