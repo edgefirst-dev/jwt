@@ -41,7 +41,7 @@
 		"./package.json": "./package.json"
 	},
 	"dependencies": {
-		"@edgefirst-dev/data": "0.0.3",
+		"@edgefirst-dev/data": "0.0.4",
 		"@mjackson/file-storage": "^0.6.1",
 		"jose": "^5.9.6",
 		"type-fest": "^4.34.1"
