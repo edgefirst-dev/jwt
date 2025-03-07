@@ -9,7 +9,7 @@ const payload = {
 	sub: "subject",
 	aud: "audience",
 	jti: "id",
-	exp: Math.floor(Date.now() / 1000) + 60,
+	exp: Math.floor(Date.now()) + 60,
 	iat: Math.floor(Date.now() / 1000),
 	nbf: Math.floor(Date.now() / 1000),
 	uid: crypto.randomUUID(),
