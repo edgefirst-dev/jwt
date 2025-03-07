@@ -306,7 +306,7 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 	 */
 	sign(
 		algorithm: JWK.Algoritm,
-		jwks: Array<{ private: jose.KeyLike; alg: string; id: string }>,
+		jwks: Array<{ private: jose.CryptoKey; alg: string; id: string }>,
 	) {
 		return JWT.sign(this, algorithm, jwks);
 	}
@@ -328,7 +328,7 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 			payload: JWT.Payload,
 		) => M,
 		token: string,
-		jwks: Array<{ public: jose.KeyLike }>,
+		jwks: Array<{ public: jose.CryptoKey }>,
 		options?: jose.JWTVerifyOptions,
 	) {
 		let key = jwks.find((key) => key.public);
@@ -353,7 +353,7 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 	static sign(
 		jwt: JWT,
 		algorithm: JWK.Algoritm,
-		jwks: Array<{ private: jose.KeyLike; alg: string; id: string }>,
+		jwks: Array<{ private: jose.CryptoKey; alg: string; id: string }>,
 	) {
 		let key = jwks.find((key) => key.alg === algorithm);
 		if (!key) {
