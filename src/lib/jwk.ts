@@ -25,8 +25,8 @@ export namespace JWK {
 	interface KeyPair {
 		id: string;
 		alg: Algoritm;
-		public: jose.KeyLike;
-		private: jose.KeyLike;
+		public: jose.CryptoKey;
+		private: jose.CryptoKey;
 		created: Date;
 		expired?: Date;
 		jwk: jose.JWK;
