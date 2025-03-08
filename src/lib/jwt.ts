@@ -127,7 +127,7 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 	 *
 	 * @returns The expiration date or null if not set.
 	 * @example
-	 * const jwt = new JWT({ exp: Math.floor(Date.now() / 1000) + 3600 });
+	 * const jwt = new JWT({ exp: Date.now() + 3600 });
 	 * console.log(jwt.expiresAt); // Date object
 	 */
 	get expiresAt() {
@@ -142,12 +142,12 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 	 *
 	 * @returns True if expired, false otherwise.
 	 * @example
-	 * const jwt = new JWT({ exp: Math.floor(Date.now() / 1000) - 10 });
+	 * const jwt = new JWT({ exp: Date.now() - 10 });
 	 * console.log(jwt.expired); // true
 	 */
 	get expired() {
 		if (this.expiresAt === null) return false;
-		return this.expiresAt.getTime() < Date.now();
+		return Date.now() > this.expiresAt.getTime();
 	}
 
 	/**
