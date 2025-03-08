@@ -83,10 +83,10 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 	 *
 	 * @returns The expiration timestamp or null if not set.
 	 * @example
-	 * const jwt = new JWT({ exp: Math.floor(Date.now() / 1000) + 3600 });
-	 * console.log(jwt.expiresIn); // timestamp
+	 * const jwt = new JWT({ exp:Date.now() + 3600 });
+	 * console.log(jwt.expirationTime); // timestamp
 	 */
-	get expiresIn() {
+	get expirationTime(): number | null {
 		if (this.parser.has("exp")) return this.parser.number("exp");
 		return null;
 	}
@@ -100,11 +100,24 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 	 * @param value - The expiration timestamp to set.
 	 * @example
 	 * const jwt = new JWT();
-	 * jwt.expiresIn = Math.floor(Date.now() / 1000) + 3600;
-	 * console.log(jwt.expiresIn);
+	 * jwt.expirationTime = Date.now() + 3600; // 1 hour from now
+	 * console.log(jwt.expirationTime);
 	 */
-	set expiresIn(value: number | null) {
+	set expirationTime(value: number | null) {
 		this.payload.exp = value ?? undefined;
+	}
+
+	/**
+	 * Gets the second from now until the JWT expires.
+	 *
+	 * @returns The expiration in seconds from now or null.
+	 * @example
+	 * const jwt = new JWT({ exp:Date.now() + 3600 });
+	 * console.log(jwt.expiresIn); // seconds from now
+	 */
+	get expiresIn() {
+		if (this.parser.has("exp")) return this.parser.number("exp") - Date.now();
+		return null;
 	}
 
 	/**
@@ -118,7 +131,7 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 	 * console.log(jwt.expiresAt); // Date object
 	 */
 	get expiresAt() {
-		if (this.expiresIn) return new Date(this.expiresIn);
+		if (this.expirationTime) return new Date(this.expirationTime);
 		return null;
 	}
 
@@ -134,7 +147,7 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 	 */
 	get expired() {
 		if (this.expiresAt === null) return false;
-		return new Date() > this.expiresAt;
+		return this.expiresAt.getTime() < Date.now();
 	}
 
 	/**
