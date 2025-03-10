@@ -146,8 +146,8 @@ export class JWT extends Data<ObjectParser> implements jose.JWTPayload {
 	 * console.log(jwt.expired); // true
 	 */
 	get expired() {
-		if (this.expiresAt === null) return false;
-		return Date.now() > this.expiresAt.getTime();
+		if (this.expiresIn === null) return false;
+		return this.expiresIn <= 0;
 	}
 
 	/**
