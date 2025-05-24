@@ -135,7 +135,3 @@ To expose your JWKS in a well-known endpoint.
 let keys = await JWK.signingKeys(storage);
 let response = Response.json(JWK.toJSON(keys));
 ```
-
-```
-
-```
