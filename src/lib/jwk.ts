@@ -22,7 +22,7 @@ export namespace JWK {
 		Encryption = "encryption:key",
 	}
 
-	interface KeyPair {
+	export interface KeyPair {
 		id: string;
 		alg: Algoritm;
 		public: jose.CryptoKey;
