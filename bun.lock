@@ -5,7 +5,7 @@
       "name": "@edgefirst-dev/jwt",
       "dependencies": {
         "@edgefirst-dev/data": "0.0.4",
-        "@mjackson/file-storage": "^0.6.1",
+        "@mjackson/file-storage": "^0.7.0",
         "jose": "^6.0.11",
         "type-fest": "^4.34.1",
       },
@@ -71,9 +71,9 @@
 
     "@loaderkit/resolve": ["@loaderkit/resolve@1.0.3", "", { "dependencies": { "@braidai/lang": "^1.0.0" } }, "sha512-oo51csrgEfeHO593bqoPOGwrX093QzDWrc/7y876b/ObDqp2Hbw+rl+3s26WRXIbnhty40T403nwU4UFX3KQCg=="],
 
-    "@mjackson/file-storage": ["@mjackson/file-storage@0.6.1", "", { "dependencies": { "@mjackson/lazy-file": "^3.3.1" } }, "sha512-H3GEVpmfmNryNoYloddIOba5OAwckfVGMvutPeI94Shbv/R+NVh89gIYa8SK3Vfa+ky9PitclP+5XQ6/zlSdQQ=="],
+    "@mjackson/file-storage": ["@mjackson/file-storage@0.7.0", "", { "dependencies": { "@mjackson/lazy-file": "^3.4.0" } }, "sha512-M1v2PvE/b7bIAQZOdiqnjh9WcyuEqRcIJrdHdZj/6ixjNER+V2jkTFUdKTt/2XTEpbgRhERO/G8C/sjK05tewA=="],
 
-    "@mjackson/lazy-file": ["@mjackson/lazy-file@3.3.1", "", { "dependencies": { "mrmime": "^2.0.0" } }, "sha512-BxpNT1KmLx0OLYfgQESx/AKGD2czwfZXh9c0SaDUQY2DRAaVYtAvSQE5EkpATFdQQKqfL+iXVoaQ/SN+w7/CDA=="],
+    "@mjackson/lazy-file": ["@mjackson/lazy-file@3.4.0", "", { "dependencies": { "mrmime": "^2.0.0" } }, "sha512-zQ/b3hEpHI7YQJjPeEKo1U9DVmLV7bNKFFYJbG20TM4bCug2u1CoBZ5IHlaIrI6oq6HuYs1FpqdtKSQyjWAN7g=="],
 
     "@mswjs/interceptors": ["@mswjs/interceptors@0.39.2", "", { "dependencies": { "@open-draft/deferred-promise": "^2.2.0", "@open-draft/logger": "^0.3.0", "@open-draft/until": "^2.0.0", "is-node-process": "^1.2.0", "outvariant": "^1.4.3", "strict-event-emitter": "^0.5.1" } }, "sha512-RuzCup9Ct91Y7V79xwCb146RaBRHZ7NBbrIUySumd1rpKqHL5OonaqrGIbug5hNwP/fRyxFMA6ISgw4FTtYFYg=="],
 
