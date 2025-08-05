@@ -42,7 +42,7 @@
 	},
 	"dependencies": {
 		"@edgefirst-dev/data": "0.0.4",
-		"@react-router/file-storage": "^0.7.0",
+		"@remix-run/file-storage": "^0.7.0",
 		"jose": "^6.0.11",
 		"type-fest": "^4.34.1"
 	},
