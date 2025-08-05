@@ -4,10 +4,10 @@ A high-level library for working with JSON Web Tokens (JWT), making it easier to
 
 ## Installation
 
-Install the library along with an implementation of the `@mjackson/file-storage`
+Install the library along with an implementation of the `@remix-run/file-storage`
 
 ```sh
-bun add @edgefirst-dev/jwt @mjackson/file-storage
+bun add @edgefirst-dev/jwt @remix-run/file-storage
 ```
 
 ## Usage
@@ -30,7 +30,7 @@ To sign a JWT, you need a signing key.
 
 ```ts
 import { JWT, JWK } from "@edgefirst-dev/jwt";
-import { MemoryFileStorage } from "@mjackson/file-storage/memory";
+import { MemoryFileStorage } from "@remix-run/file-storage/memory";
 
 let storage = new MemoryFileStorage();
 
