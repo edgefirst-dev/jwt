@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test";
-import { MemoryFileStorage } from "@mjackson/file-storage/memory";
-import { http, HttpResponse } from "msw";
+import { MemoryFileStorage } from "@remix-run/file-storage/memory";
+import { HttpResponse, http } from "msw";
 import { setupServer } from "msw/native";
 import { JWK, JWT } from ".";
 

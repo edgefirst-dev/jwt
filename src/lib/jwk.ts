@@ -2,7 +2,7 @@ import type {
 	FileStorage,
 	ListOptions,
 	ListResult,
-} from "@mjackson/file-storage";
+} from "@remix-run/file-storage";
 import * as jose from "jose";
 
 export namespace JWK {
