@@ -1,12 +1,11 @@
 {
   "lockfileVersion": 1,
-  "configVersion": 1,
   "workspaces": {
     "": {
       "name": "@edgefirst-dev/jwt",
       "dependencies": {
         "@edgefirst-dev/data": "0.0.4",
-        "@remix-run/file-storage": "^0.11.0",
+        "@remix-run/file-storage": "^0.12.0",
         "jose": "^6.1.1",
         "type-fest": "^5.2.0",
       },
@@ -76,7 +75,9 @@
 
     "@open-draft/until": ["@open-draft/until@2.1.0", "", {}, "sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg=="],
 
-    "@remix-run/file-storage": ["@remix-run/file-storage@0.11.0", "", { "peerDependencies": { "@remix-run/lazy-file": "^3.7.0" } }, "sha512-D8YT4sb4ILQXNpki6XQjpZ9JX4Y70WZS7vEiFSAFzC9UmWLWhOrRuJttG7o9la3w0wfo2Wdp19L1XAalIWbcqg=="],
+    "@remix-run/file-storage": ["@remix-run/file-storage@0.12.0", "", { "peerDependencies": { "@remix-run/fs": "^0.1.0", "@remix-run/lazy-file": "^4.0.0" } }, "sha512-eWLALrsGW9iJZxp7Xf9g+vLSBM8Erg8/uJJorljOBt71FR8Vl9HZ3CJN255VKY947bVfGRRx36q/73Hqq0Sg6w=="],
+
+    "@remix-run/fs": ["@remix-run/fs@0.1.0", "", { "dependencies": { "@remix-run/lazy-file": "^3.8.0", "mrmime": "^2.0.0" } }, "sha512-qnmYBVW3WqFoknPbmZesJjxLFyD8PJCVxzvy80viCgc5W7c4VXRoGT88EqcstKXZIXhuXZxfyAg9DQJd9lDvuA=="],
 
     "@remix-run/lazy-file": ["@remix-run/lazy-file@3.7.0", "", { "dependencies": { "mrmime": "^2.0.0" } }, "sha512-E+j9pFq+kK+m1rRlFLre7XFuoLDX0q9mYIy9PXTlLQ6rlQpE1MPZnSzx5qy5WPHGI0U9F6FRY63fm1Dklm8tlg=="],
 
@@ -281,6 +282,8 @@
     "yoctocolors-cjs": ["yoctocolors-cjs@2.1.3", "", {}, "sha512-U/PBtDf35ff0D8X8D0jfdzHYEPFxAI7jJlxZXwCSez5M3190m+QobIfh+sWDWSHMCWWJN2AWamkegn6vr6YBTw=="],
 
     "@arethetypeswrong/core/typescript": ["typescript@5.6.1-rc", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-E3b2+1zEFu84jB0YQi9BORDjz9+jGbwwy1Zi3G0LUNw7a7cePUrHMRNy8aPh53nXpkFGVHSxIZo5vKTfYaFiBQ=="],
+
+    "@remix-run/fs/@remix-run/lazy-file": ["@remix-run/lazy-file@3.8.0", "", { "dependencies": { "mrmime": "^2.0.0" } }, "sha512-MqIjiEgtzSZMNFqkFO7VL6wKkkopRBxjscXlFJLybmQrD9w9qRJ0TMMEYIuIHXiSD1R9HqlxU8rsSTDMa4mOyA=="],
 
     "cli-highlight/yargs": ["yargs@16.2.0", "", { "dependencies": { "cliui": "^7.0.2", "escalade": "^3.1.1", "get-caller-file": "^2.0.5", "require-directory": "^2.1.1", "string-width": "^4.2.0", "y18n": "^5.0.5", "yargs-parser": "^20.2.2" } }, "sha512-D1mvvtDG0L5ft/jGWkLpG1+m0eQxOfaBvTNELraWj22wSVUMWxZUvYgJYcKh6jGGIkJFhH4IZPQhR4TKpc8mBw=="],
 
