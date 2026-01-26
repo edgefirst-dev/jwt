@@ -76,7 +76,7 @@
 
     "@open-draft/until": ["@open-draft/until@2.1.0", "", {}, "sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg=="],
 
-    "@remix-run/file-storage": ["@remix-run/file-storage@0.13.0", "", { "peerDependencies": { "@remix-run/fs": "^0.1.0", "@remix-run/lazy-file": "^4.0.0" } }, "sha512-mL00sQhCeF95x61roVeuTAnHYZ0R6lZnoWE1es10+Hef5wPkVGgOVTKIn5+A/5EtQVa8GHiVe7ldKfoq9izgrQ=="],
+    "@remix-run/file-storage": ["@remix-run/file-storage@0.13.1", "", { "peerDependencies": { "@remix-run/fs": "^0.4.0", "@remix-run/lazy-file": "^5.0.0" } }, "sha512-4xbHNRFUkrjawEkHS/R4skxMW/e6OJiJASlu4gOoyPjqNkV/NuH6FzgF0taPH0E9Im2PE3I5m2WFsg/jBc64bQ=="],
 
     "@remix-run/fs": ["@remix-run/fs@0.1.0", "", { "dependencies": { "@remix-run/lazy-file": "^3.8.0", "mrmime": "^2.0.0" } }, "sha512-qnmYBVW3WqFoknPbmZesJjxLFyD8PJCVxzvy80viCgc5W7c4VXRoGT88EqcstKXZIXhuXZxfyAg9DQJd9lDvuA=="],
 
