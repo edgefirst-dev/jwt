@@ -6,7 +6,7 @@
       "name": "@edgefirst-dev/jwt",
       "dependencies": {
         "@edgefirst-dev/data": "0.0.4",
-        "@remix-run/file-storage": "^0.13.0",
+        "@remix-run/file-storage": "^1.0.0",
         "jose": "^6.1.1",
         "type-fest": "^5.2.0",
       },
@@ -74,13 +74,13 @@
 
     "@open-draft/until": ["@open-draft/until@3.0.1", "", {}, "sha512-s7/9ELP4aP9YZtW7RJaa0Xf3RISaRH9+EFN18FtykJYRHGNrl8f9ymvoNXzjhrjmftFvkQudtuDU9RYhk0xs3A=="],
 
-    "@remix-run/file-storage": ["@remix-run/file-storage@0.13.7", "", { "dependencies": { "@remix-run/fs": "^0.4.6", "@remix-run/lazy-file": "^5.0.6" } }, "sha512-7tDgyzs1v0dQgfMt+lpbIzEVkrgrcKJLGbBeXrpJITuCeWoc0XgFfDTp6gghS3s8aWQTm5XHbgnldLoQCEU9Mw=="],
+    "@remix-run/file-storage": ["@remix-run/file-storage@1.0.0", "", { "dependencies": { "@remix-run/fs": "^1.0.0", "@remix-run/lazy-file": "^5.0.8" } }, "sha512-nfPAMxK40VNpx9vZFP4fMqwrEVanxEDsRCSYr41+3CtNF1kWzYETzCP/+xZ6uG/OtxiIn92S2pTkHvpr5UFyMw=="],
 
-    "@remix-run/fs": ["@remix-run/fs@0.4.6", "", { "dependencies": { "@remix-run/lazy-file": "^5.0.6", "@remix-run/mime": "^0.4.2" } }, "sha512-xxvixX/WyufRr6YrjPLGXvyE5Lzb5G/Y4tygk6McJ6nr59f3hO9w3aVc/lvsVPD7liYfM1EyMnmd4qIByJq9bg=="],
+    "@remix-run/fs": ["@remix-run/fs@1.0.0", "", { "dependencies": { "@remix-run/lazy-file": "^5.0.8", "@remix-run/mime": "^1.0.0" } }, "sha512-LW8oPMgyG075h/Dbq0tIrAHIYnR+gb/1RKYVNQQECij7dCua/mviHuSwGcTB73xSH+OKreSYDxxSgvvemK56Ig=="],
 
-    "@remix-run/lazy-file": ["@remix-run/lazy-file@5.0.6", "", { "dependencies": { "@remix-run/mime": "^0.4.2" } }, "sha512-jIeeqkqR+AgTEKls5WMPbiGyXhrkAJugN4ot/K9X74CLzO9uMbcFDKef7CWCfjN1s+551u+5LxNWLJx1nztuVg=="],
+    "@remix-run/lazy-file": ["@remix-run/lazy-file@5.0.8", "", { "dependencies": { "@remix-run/mime": "^1.0.0" } }, "sha512-ZnmFucfv4tDgkXt8RA51NhfL7KUMoDiJ/yZP2cw/qMgSDYSGLWsnwiCOwSKL+aMEy6eHeY2pvP3KxKPBLfVh8g=="],
 
-    "@remix-run/mime": ["@remix-run/mime@0.4.2", "", {}, "sha512-KpZZxBYIrLsvUtt2ZdwK+E2ClVmyvW11Nej6fPgwJpohBMpbCHtR78wtCTv0vqvK5ckLZ7ks2q4pV5dMYFypiA=="],
+    "@remix-run/mime": ["@remix-run/mime@1.0.0", "", {}, "sha512-oOPL/TMsNIbfNpSzjtZhTmIeqfgCYM3mQOYs13UsHKTmgLRgKfiNz4B1q/SN3juhCrtPwDwjwUEx1Vn8vp9SEg=="],
 
     "@shikijs/engine-oniguruma": ["@shikijs/engine-oniguruma@3.23.0", "", { "dependencies": { "@shikijs/types": "3.23.0", "@shikijs/vscode-textmate": "^10.0.2" } }, "sha512-1nWINwKXxKKLqPibT5f4pAFLej9oZzQTsby8942OTlsJzOBZ0MWKiwzMsd+jhzu8YPCHAswGnnN1YtQfirL35g=="],
 
